@@ -15,33 +15,12 @@ const app = express();
    MIDDLEWARES
 ======================= */
 
-
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://frontend-productify.vercel.app",
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow server-to-server, Postman, curl
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(null, false);
-    },
+    origin: ENV.FRONTEND_URL,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// 🚨 VERY IMPORTANT: preflight explicitly allow
-app.options("*", cors());
 
 app.use(clerkMiddleware());
 app.use(express.json());
